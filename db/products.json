@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Pan de Salvado",
+    "descripcion": "Pan Salvado",
+    "code": "P002",
+    "price": 130,
+    "status": true,
+    "stock": 300,
+    "category": "Panificado",
+    "thumbnails": ""
+  },
+  {
+    "id": 4,
+    "title": "Tomate Redondo",
+    "descripcion": "Tomate redondo rojo de granja",
+    "code": "T001",
+    "price": 1340,
+    "status": true,
+    "stock": 200,
+    "category": "Verduras",
+    "thumbnails": ""
+  },
+  {
+    "id": 5,
+    "title": "Milanesa de Soja",
+    "descripcion": "Milanesa rebozada de soja con jamon y queso",
+    "code": "M001",
+    "price": 3234,
+    "status": true,
+    "stock": 220,
+    "category": "Minutas",
+    "thumbnails": ""
+  }
+]
