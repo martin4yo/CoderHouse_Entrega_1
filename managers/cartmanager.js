@@ -3,15 +3,15 @@ const { Products } = require('../db/products.js');
 
 class CartManager {
 
-     constructor() {
-      
-      this.products_table = new Products
-      
-      this.products = this.products_table.getProducts()
-      this.carts_table = new Carts
+    constructor() {
+    
+    this.products_table = new Products
+    
+    this.products = this.products_table.getProducts()
+    this.carts_table = new Carts
 
-      this.carts = this.carts_table.getCarts()
-      this.cart_id = this.carts.length;
+    this.carts = this.carts_table.getCarts()
+    this.cart_id = this.carts.length;
 
     }      
 
@@ -115,6 +115,5 @@ class CartManager {
   }
 
 }
-
 
 module.exports = CartManager
