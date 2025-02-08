@@ -3,7 +3,7 @@ const router = express.Router();
 const products = require("./productroute");
 const carts = require("./cartroute");
 
-/* GET home page. */
+/* Home */
 router.get("/", function (req, res, next) {
   res.send(
     `<div style='text-align: center; margin-top: 20%; font-size: 2em; font-family: Arial;'>
@@ -13,7 +13,10 @@ router.get("/", function (req, res, next) {
   );
 });
 
+//Importa las rutas de products
 router.use("/api/products", products);
+
+//Importa las rutas de carts
 router.use("/api/carts", carts);
 
 module.exports = router;

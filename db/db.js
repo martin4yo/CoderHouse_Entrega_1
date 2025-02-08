@@ -3,13 +3,13 @@ const fs = require("fs");
 
 function initTable(filename){
 
-    let carts = []
+    let data = []
     // Si el archivo para guardar los productos no existe lo crea
     if (fs.existsSync(filename)) {
                 try {
-                    let productos_file 
-                    productos_file = fs.readFileSync(filename, "utf8")
-                    productos = JSON.parse(productos_file) // Contenido del archivo leído en formato objeto    
+                    let data_file 
+                    data_file = fs.readFileSync(filename, "utf8")
+                    data = JSON.parse(data_file) // Contenido del archivo leído en formato objeto    
                 } catch (err) {
                     return console.error("Error al leer el archivo de productos :", err);
                 }
@@ -23,7 +23,7 @@ function initTable(filename){
 
         }
 
-    return productos;
+    return data;
 
 }
 
@@ -49,35 +49,3 @@ function refreshTable(filename, data){
 }
 
 module.exports = { initTable, refreshTable }
-
-/*
-
-// 2. readFile
-// Para obtener el contenido de un archivo usando un callback que recibe el error y el contenido del archivo:
-
-fs.readFile('archivo.txt', 'utf8', (err, data) => {
-    if (err) {
-        console.error('Error al leer el archivo:', err);
-    } else {
-        console.log('Contenido del archivo:');
-        console.log(data);
-    }
-});
-
-// 3. appendFile
-// Para añadir contenido a un archivo sin sobreescribirlo:
-
-const additionalContent = '\nEste es un texto adicional.';
-
-fs.appendFile('archivo.txt', additionalContent, (err) => {
-    if (err) {
-        console.error('Error al añadir contenido al archivo:', err);
-    } else {
-        console.log('Contenido añadido al archivo correctamente.');
-    }
-});
-
-// 4. unlink
-// Para eliminar un archivo usando un callback que maneja errores:
-
-*/

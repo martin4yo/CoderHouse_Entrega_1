@@ -1,9 +1,10 @@
 const ProductManager = require("../managers/productmanager");
 
-const getProducts= (req, res) => {
+const getProducts = (req, res) => {
   try {
+    //Instancia la clase ProductManager para recuperar la lista de productos completa
     const pm = new ProductManager
-    const products = pm.getProducts(); 
+    const products = pm.getProducts();
     if (products) {
       res.status(200).json(products);
     } else {
@@ -15,11 +16,12 @@ const getProducts= (req, res) => {
   }
 };
 
-const getProductById= (req, res) => {
+const getProductById = (req, res) => {
   try {
+    //Instancia la clase ProductManager para recuperar un producto por ID
     const pm = new ProductManager
-    const {id} = req.params
-    const product = pm.getProductById(id); 
+    const { id } = req.params
+    const product = pm.getProductById(id);
     if (product) {
       res.status(200).json(product);
     } else {
@@ -31,25 +33,31 @@ const getProductById= (req, res) => {
   }
 };
 
-const deleteProduct= (req, res) => {
+const deleteProduct = (req, res) => {
   try {
+    //Instancia la clase ProductManager para eliminar el producto
     const pm = new ProductManager
-    const {id} = req.params
+    const { id } = req.params
     res.status(200).json(pm.deleteProduct(id));
   } catch (error) {
     res.status(500).send("Error interno del servidor");
   }
 };
 
-const updateProduct= (req, res) => {
+const updateProduct = (req, res) => {
   try {
+    //Instancia la clase ProductManager para actualizar el producto
     const pm = new ProductManager
-    const product = {...req.body}
+
+    //Construye el json con los datos a actualizar desde el body
+    const product = { ...req.body }
     try {
-      const updated_product = pm.updateProduct(product); 
+
+      //Llama al metodo de ProductManager para actualizar el producto
+      const updated_product = pm.updateProduct(product);
       res.status(200).json(updated_product);
     }
-    catch (error){
+    catch (error) {
       res.status(400).send(`${error}`);
     }
   } catch (error) {
@@ -57,15 +65,20 @@ const updateProduct= (req, res) => {
   }
 };
 
-const addProduct= (req, res) => {
+const addProduct = (req, res) => {
   try {
+    //Instancia la clase ProductManager para crear el producto
     const pm = new ProductManager
-    const product = {...req.body}
+
+    //Construye el json con los datos a actualizar desde el body
+    const product = { ...req.body }
     try {
-      const new_product = pm.addProduct(product); 
+
+      //Llama al metodo que agrega el producto
+      const new_product = pm.addProduct(product);
       res.status(200).json(new_product);
     }
-    catch (error){
+    catch (error) {
       res.status(400).send(`${error}`);
     }
   } catch (error) {

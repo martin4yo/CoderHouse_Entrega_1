@@ -1,66 +1,98 @@
 const { Products } = require('../db/products.js');
 
 class ProductManager {
-     constructor() {
-        this.table = new Products;
-        this.productos = this.table.getProducts();
-        this.producto_id = this.productos.length;
+  constructor() {
 
-        const max_id = Math.max(...productos.map(p => p.id));
-        if (max_id){
-          this.producto_id = max_id;
-        }        
-     }      
+    //Instancia la clase Products que administra la tabla 
+    this.table = new Products;
 
-    // Agrega un producto, 
-    // si el producto tiene el mismo codigo o descripcion que uno existente da un error
-    // si falta algun dato da un error
-    //    title, descripcion, code, price, status, stock, category, thumbnails
+    //Recupera los productos guardados
+    this.productos = this.table.getProducts();
 
-  addProduct(product){
+    //Setea el ID a la cantidad de items del objeto
+    this.producto_id = this.productos.length;
+
+    //Resetea el ID al ultimo ID utilizado por si se eliminaron objetos intermedios
+    if (this.productos.length > 0){
+      const max_id = Math.max(...this.productos.map(p => p.id));
+      if (max_id) {
+        this.producto_id = max_id;
+      }
+    } 
+
+    
+  }
+
+  // Agrega un producto, 
+  // si el producto tiene el mismo codigo o descripcion que uno existente da un error
+  // si falta algun dato da un error
+  //    title, descripcion, code, price, status, stock, category, thumbnails
+
+  addProduct(product) {
 
     try {
 
-        const existe = this.productos.find((p)=>p.title === product.title || p.code === product.code || p.descripcion === product.descripcion);
-        
-        if(existe){
-            return "Producto existente, no sera agregado !!";
-        }
+      // Verifica si existe el producto filtrando por titulo, codigo y descripcion
+      const existe = this.productos.find((p) => p.title === product.title || p.code === product.code || p.descripcion === product.descripcion);
 
-        this.producto_id++
-        const new_product = {
-            "id" : this.producto_id,
-            ...product
-        }
+      if (existe) {
+        // Si existe no lo agrega
+        throw new Error("Producto existente, no sera agregado !!")
+      }
 
-        this.productos.push(new_product);
-        this.table.saveProducts(this.productos)
-        return new_product
+      //Incrementa el ID del producto
+      this.producto_id++
 
-    } catch(err) {
-        return `Error al agregar el producto,  ${err}: `;
+      //Crea la estructura del nuevo producto utilizando la estructura que recibio como parametro, le agrega el ID
+      const new_product = {
+        "id": this.producto_id,
+        ...product
+      }
+
+      //Agrega el producto al array de productos
+      this.productos.push(new_product);
+
+      //Guarda el array en el archivo
+      this.table.saveProducts(this.productos)
+      return new_product
+
+    } catch (err) {
+      throw new Error(`Al agregar el producto :  ${err} `)
     }
   }
 
-  getProducts(){
+  getProducts() {
+    //Devuelve el array de todos los productos
     return this.productos;
   }
 
   getProductById(id) {
-    return this.productos.find((p)=>p.id === parseInt(id));
+    //Busca un producto por ID
+    return this.productos.find((p) => p.id === parseInt(id));
   }
 
-  updateProduct(product){
+  updateProduct(product) {
+    // Verifica que el campo ID este en la estructura pasada como parametro
+    if ("id" in product) {
 
-    if ("id" in product){
+      //Recupera el producto segun el ID
       const actual_product = this.getProductById(product.id)
-      if (actual_product){
+
+      //Si el producto existe
+      if (actual_product) {
+
+        //Busca el indice que tiene ese producto en el array
         const index = this.productos.findIndex(p => p.id === product.id);
+
+        //Recorre todas las propiedades del objeto que indica el index y las reemplaza
+        //por las que se recibieron en el objeto parametro
         Object.keys(product).forEach(key => {
           if (product.hasOwnProperty(key)) {
-              this.productos[index][key] = product[key];
+            this.productos[index][key] = product[key];
           }
         });
+
+        //Guarda la tabla de productos
         this.table.saveProducts(this.productos)
         return this.productos[index]
       }
@@ -68,33 +100,38 @@ class ProductManager {
         throw new Error(`No se encontro el producto con el id ${product.id}`);
       }
     }
-    else
-      {
-        throw new Error("No se encontro el campo id para recuperar el producto");
-      }
+    else {
+      throw new Error("No se encontro el campo id para recuperar el producto");
+    }
   }
 
-  deleteProduct(id){
+  deleteProduct(id) {
     try {
+      //Busca el producto por el ID
       let product = this.productos.filter((p) => p.id === parseInt(id));
-      console.log(product);
-      if (product.length !==0) {
+      if (product) {
+
+        //Si encontro el producto arma un array con todos los productos menos el indicado en el id
         let productos_filtrados = this.productos.filter((p) => p.id !== parseInt(id));
+
+        //Guarda la tabla
         this.table.saveProducts(productos_filtrados);
+
+        //Reemplaza el array de productos por el nuevo array sin el elemento eliminado
         this.productos = productos_filtrados;
         return `Producto ${id} eliminado`;
       }
       else {
-        return `El producto ${id}, no existe`;
+        throw new Error(`El producto ${id}, no existe`)
       }
     }
-    catch(err){
-      return `Error al eliminar el producto ${id}, Error ${err}`;
+    catch (err) {
+      throw new Error(`Al eliminar el producto ${id} : ${err}`)
     }
-    
+
   }
 
 }
 
 
-module.exports = ProductManager
+module.exports = ProductManager;

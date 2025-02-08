@@ -1,35 +1,13 @@
 [
   {
     "id": 1,
-    "title": "Pan de Centeno",
-    "descripcion": "Pan Salvado",
-    "code": "P002",
-    "price": 130,
+    "title": "Pepsi Coca Cola 2.25l",
+    "descripcion": "Peisi Bebida azucarada sabor cola mediana",
+    "code": "C153",
+    "price": 3440,
     "status": true,
-    "stock": 350,
-    "category": "Panificado",
+    "stock": 410,
+    "category": "Bebidas",
     "thumbnails": ""
-  },
-  {
-    "id": 5,
-    "title": "Milanesa de Soja",
-    "descripcion": "Milanesa rebozada de soja con jamon y queso",
-    "code": "M001",
-    "price": 3234,
-    "status": true,
-    "stock": 220,
-    "category": "Minutas",
-    "thumbnails": ""
-  },
-  {
-    "id": 6,
-    "title": "Zapallito redondo",
-    "descripcion": "Zapallito verde",
-    "code": "Z001",
-    "price": 540,
-    "status": true,
-    "stock": 650,
-    "category": "Verduras",
-    "thumbnails": "C:\\Imagenes\\Test\\image2.jpg"
   }
 ]
