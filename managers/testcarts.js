@@ -11,4 +11,4 @@ console.log(listacarts.getCartById(2))
 //console.log(listaproductos.deleteProduct(3))
 //console.log(listaproductos.getProducts())
 
-console.log(JSON.stringify(listacarts.getCarts()))
+console.log(listacarts.getCarts())

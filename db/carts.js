@@ -3,7 +3,7 @@ const db = require('./db')
 class Carts {
 
     constructor(){
-        this.filename = "../db/carts.json" 
+        this.filename = "../Entrega_1/db/carts.json" 
         this.table = db.initTable(this.filename)
     }
 
