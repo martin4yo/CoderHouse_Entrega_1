@@ -40,6 +40,13 @@ producto = {
 listaproductos.addProduct(producto)
 */
 
+// producto = {
+//     "id" : 5, 
+//     "title" : "Milanesa de Pollo",
+//     "category" : "Milangas"
+// }
+// listaproductos.updateProduct(producto)
+
 console.log(listaproductos.getProducts())
 //console.log(listaproductos.getProductById(2))
 //console.log(listaproductos.deleteProduct(2))

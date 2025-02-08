@@ -13,6 +13,12 @@ class CartManager {
     this.carts = this.carts_table.getCarts()
     this.cart_id = this.carts.length;
 
+    const max_id = Math.max(...carts.map(p => p.id));
+    if (max_id){
+          this.cart_id = max_id;
+        }
+
+
     }      
 
     // Agrega un cart, 
@@ -24,13 +30,13 @@ class CartManager {
 
       try {
 
-          const product = this.products.find((p)=>p.id === new_product_id);
+          const product = this.products.find((p)=>p.id === parseInt(new_product_id));
                     
           if (!product){
               return `El producto con el id ${new_product_id} no existe`
           }
           
-          const cart = this.carts.find((c)=>c.id === cart_id);
+          const cart = this.carts.find((c)=>c.id === parseInt(cart_id));
 
           // Variable que contiene que mensaje se envia en la consola 
           let msg = "agregado al"
@@ -61,7 +67,7 @@ class CartManager {
               let productos = cart.products 
 
               // Buscar el producto en el carrito
-              let producto = productos.find((p) => p.product_id === new_product_id)
+              let producto = productos.find((p) => p.product_id === parseInt(new_product_id))
 
               if (producto){
                 // Si el producto existe
@@ -69,7 +75,7 @@ class CartManager {
                 // Si la cantidad es menor a 0 entonces elimina ese producto
                 if (producto.quantity < 0){
                   msg = "eliminado del"
-                  let productos_restantes = productos.filter((p) => p.product_id !== new_product_id)
+                  let productos_restantes = productos.filter((p) => p.product_id !== parseInt(new_product_id))
                   cart.products = productos_restantes
                 }
               }
@@ -98,12 +104,12 @@ class CartManager {
   }
 
   getCartById(id) {
-    return this.carts.find((p)=>p.id = id);
+    return this.carts.find((p)=>p.id === parseInt(id));
   }
 
   deleteProduct(cart_id, product_id, quantity){
     try {
-      let carts_filtrados = this.carts.filter((p) => p.id !== id);
+      let carts_filtrados = this.carts.filter((p) => p.id !== parseInt(id));
       this.table.saveProducts(carts_filtrados);
       this.carts = carts_filtrados;
       return `cart ${id} eliminado`;

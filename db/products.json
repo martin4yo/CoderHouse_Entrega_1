@@ -1,24 +1,13 @@
 [
   {
     "id": 1,
-    "title": "Pan de Salvado",
+    "title": "Pan de Centeno",
     "descripcion": "Pan Salvado",
     "code": "P002",
     "price": 130,
     "status": true,
-    "stock": 300,
+    "stock": 350,
     "category": "Panificado",
-    "thumbnails": ""
-  },
-  {
-    "id": 4,
-    "title": "Tomate Redondo",
-    "descripcion": "Tomate redondo rojo de granja",
-    "code": "T001",
-    "price": 1340,
-    "status": true,
-    "stock": 200,
-    "category": "Verduras",
     "thumbnails": ""
   },
   {
@@ -31,5 +20,16 @@
     "stock": 220,
     "category": "Minutas",
     "thumbnails": ""
+  },
+  {
+    "id": 6,
+    "title": "Zapallito redondo",
+    "descripcion": "Zapallito verde",
+    "code": "Z001",
+    "price": 540,
+    "status": true,
+    "stock": 650,
+    "category": "Verduras",
+    "thumbnails": "C:\\Imagenes\\Test\\image2.jpg"
   }
 ]
