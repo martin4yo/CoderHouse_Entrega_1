@@ -51,7 +51,8 @@ const addProduct= (req, res) => {
       const cart = cm.addProductToCart(cid, pid)
       res.status(200).json(cart);
     } catch (err){
-      res.status(400).send("Error al agregar el producto");
+      console.log(err)
+      res.status(400).json({ error : err.message});
     }
     //Llama al metodo de CartManager para agregar el producto al carrito
     
