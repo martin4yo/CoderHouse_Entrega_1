@@ -109,7 +109,8 @@ class ProductManager {
     try {
       //Busca el producto por el ID
       let product = this.productos.filter((p) => p.id === parseInt(id));
-      if (product) {
+      
+      if (product.length > 0) {
 
         //Si encontro el producto arma un array con todos los productos menos el indicado en el id
         let productos_filtrados = this.productos.filter((p) => p.id !== parseInt(id));
@@ -126,7 +127,7 @@ class ProductManager {
       }
     }
     catch (err) {
-      throw new Error(`Al eliminar el producto ${id} : ${err}`)
+      throw new Error(err)
     }
 
   }

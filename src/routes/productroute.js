@@ -17,4 +17,5 @@ router.post("/", addProduct);
 //Actualiza un producto
 router.put("/", updateProduct);
 
+
 module.exports = router;

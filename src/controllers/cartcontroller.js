@@ -8,7 +8,7 @@ const getCarts= (req, res) => {
     res.status(200).json(carts);
   } catch (error) {
     console.error("Error al obtener los carritos:", error);
-    res.status(500).send("Error interno del servidor");
+    res.status(500).send({success : false, message : "Error interno del servidor"});
   }
 };
 
@@ -20,7 +20,7 @@ const addCart= (req, res) => {
     res.status(200).json(cm.addCart());
   } catch (error) {
     console.error("Error al agregar un carrito :", error);
-    res.status(500).send("Error interno del servidor");
+    res.status(500).send({success : false, message : "Error interno del servidor"});
   }
 };
 
@@ -36,7 +36,7 @@ const getCartById= (req, res) => {
     const cart = cm.getCartById(id); 
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).send("Error interno del servidor");
+    res.status(500).send({success : false, message : "Error interno del servidor"});
   }
 };
 
@@ -52,12 +52,12 @@ const addProduct= (req, res) => {
       res.status(200).json(cart);
     } catch (err){
       console.log(err)
-      res.status(400).json({ error : err.message});
+      res.status(400).json({success : false, message : err.message});
     }
     //Llama al metodo de CartManager para agregar el producto al carrito
     
   } catch (error) {
-    res.status(500).send("Error interno del servidor");
+    res.status(500).send({success : false, message : "Error interno del servidor"});
   }
 };
 

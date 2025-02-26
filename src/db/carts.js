@@ -1,22 +1,22 @@
 const db = require('./db')
 
-class Products {
+class Carts {
 
     constructor(){
-        this.filename = "../Entrega_1/db/products.json" 
+        this.filename = "../Entrega_1/src/db/carts.json" 
         this.table = db.initTable(this.filename)
     }
 
-    //Recupera los productos
-    getProducts(){
+    //Recupera los carritos
+    getCarts(){
         return db.initTable(this.filename)
     }
-    
-    //Guarda los productos
-    saveProducts(data){
+  
+    //Guarda los carritos
+    saveCarts(data){
         return db.refreshTable(this.filename, data)
     }
     
 }
 
-module.exports = { Products }
+module.exports = { Carts }
