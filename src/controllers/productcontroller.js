@@ -1,5 +1,14 @@
 const ProductManager = require("../managers/productmanager");
 
+const updateClientView = (req, res) => {
+  //Dispara el evento para mostrar los productos en el cliente
+  const pm = new ProductManager
+  const products = pm.getProducts();
+  const io = req.app.get("io"); 
+  io.emit("showProducts", {info : "lista",
+                            data : products})
+}
+
 const getProducts = (req, res) => {
   try {
     //Instancia la clase ProductManager para recuperar la lista de productos completa
@@ -38,12 +47,12 @@ const deleteProduct = (req, res) => {
     //Instancia la clase ProductManager para eliminar el producto
     const pm = new ProductManager
     const { id } = req.params
-    res.status(200).json({success : true, message : pm.deleteProduct(id)});
 
-    const io = req.app.get("io"); 
-    const products = pm.getProducts();
-    io.emit("serverUserMessage", {info : "lista",
-                                    data : products})
+    const deleted_product = pm.deleteProduct(id)
+
+    updateClientView(req, res)
+
+    res.status(200).json({success : true, message : deleted_product});
 
   } catch (error) {
     res.status(500).send({success : false, message : error.message});
@@ -61,6 +70,9 @@ const updateProduct = (req, res) => {
 
       //Llama al metodo de ProductManager para actualizar el producto
       const updated_product = pm.updateProduct(product);
+
+      updateClientView(req, res)
+      
       res.status(200).json(updated_product);
     }
     catch (error) {
@@ -83,12 +95,10 @@ const addProduct = (req, res) => {
       //Llama al metodo que agrega el producto
       const new_product = pm.addProduct(product);
 
-      const io = req.app.get("io"); 
-      const products = pm.getProducts();
-      io.emit("serverUserMessage", {info : "lista",
-                                    data : products})
+      updateClientView(req, res)
 
       res.status(200).json(new_product);
+
     }
     catch (error) {
       res.status(400).send({success : false, message : error.message});

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "Pepsi Coca Cola 2.25l",
+    "title": "Pepsi Cola",
     "descripcion": "Peisi Bebida azucarada sabor cola mediana",
     "code": "C153",
     "price": 3440,
@@ -44,11 +44,33 @@
     "thumbnails": ""
   },
   {
-    "id": 5,
-    "title": "Jugo de Naranja Exprimido",
-    "descripcion": "Jugo de Naranga Natural",
-    "code": "J323",
-    "price": 3420,
+    "id": 6,
+    "title": "Sprite 2.25l",
+    "descripcion": "Bebida Azucarada sabor Lima Limon",
+    "code": "S188",
+    "price": 490,
+    "status": true,
+    "stock": 50,
+    "category": "Bebidas",
+    "thumbnails": ""
+  },
+  {
+    "id": 7,
+    "title": "Pepsi Black 1.5l",
+    "descripcion": "Bebida con Edulcorante",
+    "code": "P188",
+    "price": 490,
+    "status": true,
+    "stock": 50,
+    "category": "Bebidas",
+    "thumbnails": ""
+  },
+  {
+    "id": 8,
+    "title": "Pepsi 1.5l",
+    "description": "Bebida Cola Azucarada",
+    "code": "G188",
+    "price": 490,
     "status": true,
     "stock": 50,
     "category": "Bebidas",

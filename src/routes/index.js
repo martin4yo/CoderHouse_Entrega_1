@@ -5,12 +5,7 @@ const carts = require("./cartroute");
 
 /* Home */
 router.get("/", function (req, res, next) {
-  res.send(
-    `<div style='text-align: center; margin-top: 20%; font-size: 2em; font-family: Arial;'>
-    <h1>¡Bienvenido a la API de eCommerce!</h1>
-    <p>Para ver los productos, ve a <a href="http://localhost:8080/api/products">/products</a></p>
-    </div>`
-  );
+  res.render("index");
 });
 
 //Importa las rutas de products

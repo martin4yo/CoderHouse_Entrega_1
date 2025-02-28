@@ -1,18 +1,56 @@
 body{
-    background-color: #d0e4ec;
+    background-color: #d1ecf3;
     font-family: Arial, sans-serif;
     margin: 10px;
     padding: 10px;
-    font-size: 2.5rem;
-    display: flex;
     justify-content: center;
 }
 
+.wellcome{
+    text-align: center; 
+    font-size: 2em; 
+    font-family: Arial;
+    padding: 50px;
+    background-color: white;
+}
+
+.box-shd {
+    box-shadow: 5px 5px 10px gray;
+}
 .product_list {
-    margin: 10px;
+    background-color : white;
+    width: 100%;
+}
+
+.custom-btn{
+    width: 40%;
+    height: 60px;
+    margin-top:30px;
+    font-size: 1.5rem; /* Ajusta el tamaño del texto */
+    height: auto; /* Ajusta el alto al contenido */
+}
+
+.bg-darkblue {
+    background-color: #2691dd !important; /* Azul oscuro personalizado */
+    color: white !important; /* Texto blanco para contraste */
+}
+
+.bg-darkcyan {
+    background-color: rgb(114, 12, 161) !important; /* Azul oscuro personalizado */
+    color: white !important; /* Texto blanco para contraste */
+}
+
+.coderhouse-title {
+    background-color: black;
+    color:white;
+    font-weight: bold;
     padding: 10px;
 }
 
-img{
-    border-radius: 50%;
+.coderhouse-comision {
+    font-size: 15px;
+}
+
+.coderhouse-curso {
+    font-size: 35px;
 }

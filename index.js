@@ -14,34 +14,23 @@ server.listen(PORT, () => {
 });
 
 
-//* Configuracion de socket.io. *****************************
+//* Configuracion de socket.io. 
 const { Server } = require("socket.io");
 const io = new Server(server);
 
 //* Guardo la variable IO para usarla en las vistas
 app.set("io", io);
 
-//* Lista de mensajes que se guardan en el servidor (simulando una base de datos)
-const messages = [];
-
-//* Evento de conexión - Cada que se conecta un client se ejecuta su function CB
+//* Inicializo el socket y defino un solo evento para mostrar los productos 
 io.on("connection", (socket)=>{
-
-  socket.on("userConnect", async (data)=>{
+  
+  socket.on("getProducts", async (data)=>{
 
       const response = await axios.get('http://localhost:8080/api/products/');
       const products = response.data
-      io.emit("serverUserMessage", {info : "lista",
+      io.emit("showProducts", {info : "lista",
                                     data : products})
   })
 
-  socket.on("disconnect", (data)=>{
-    console.log("----> ", data) // transport close
-    console.log("Cliente desconectado:", socket.id);
-  })
 })
 
-// app.listen(PORT, () => {
-//   displayRoutes(app);
-//   console.log(`Server listening on port http://localhost:${PORT}`);
-// });

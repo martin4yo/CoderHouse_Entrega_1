@@ -26,8 +26,9 @@ app.set("views", path.join(__dirname, "./src/views"));
 
 app.use("/static", express.static(path.join(__dirname, "./src/public")));
 
-//Renderizar la lista de productos 
-app.get("/", async (req, res) => {
+// RUTAS PARA LAS VISTAS
+//Ruta para acceder a la vista de productos publicados
+app.get("/home", async (req, res) => {
     try {
       const response = await axios.get('http://localhost:8080/api/products/');
       const products = response.data
@@ -38,7 +39,7 @@ app.get("/", async (req, res) => {
     }
   });
 
-//Renderizar la lista de productos 
+//Ruta para acceder a la vista en tiempo real
 app.get("/realtimeproducts", async (req, res) => {
   try {
     res.render("realtimeproducts");
@@ -48,7 +49,7 @@ app.get("/realtimeproducts", async (req, res) => {
   }
 });
   
-// CONFIGURACION DE RUTAS 
+// CONFIGURACION DE RUTAS DE LA API
 
 const routes = require("./src/routes/index");
 app.use("/", routes);

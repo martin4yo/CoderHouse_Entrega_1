@@ -34,6 +34,10 @@ class ProductManager {
 
       // Verifica si existe el producto filtrando por titulo, codigo y descripcion
       const existe = this.productos.find((p) => p.title === product.title || p.code === product.code || p.descripcion === product.descripcion);
+    
+      if (product.code === undefined || product.title === undefined || product.description === undefined) {
+        throw new Error("Los datos title, code y description son obligatorios !!")
+      }  
 
       if (existe) {
         // Si existe no lo agrega
@@ -57,7 +61,7 @@ class ProductManager {
       return new_product
 
     } catch (err) {
-      throw new Error(`Al agregar el producto :  ${err} `)
+      throw new Error(`${err} `)
     }
   }
 
