@@ -13,11 +13,12 @@ const updateProducts = (products) => {
   <table class="table table-bordered">
         <thead>
             <tr>
-                <th colspan="3" class="text-center bg-darkcyan">Productos RealTime</th>
+                <th colspan="4" class="text-center bg-darkcyan">Productos RealTime</th>
             </tr>
         </thead>
         <thead class="table-primary">
             <tr>
+            <th>Id</th>
             <th>Codigo</th>
             <th>Descripcion</th>
             <th class="text-end">Precio</th>
@@ -29,6 +30,7 @@ const updateProducts = (products) => {
     .map((product) => {
         return `
         <tr>
+            <td>${product.id}</td>
             <td>${product.code}</td>
             <td>${product.title}</td>
             <td class="text-end">$${product.price}</td>

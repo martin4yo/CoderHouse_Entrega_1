@@ -32,12 +32,13 @@ class ProductManager {
 
     try {
 
-      // Verifica si existe el producto filtrando por titulo, codigo y descripcion
-      const existe = this.productos.find((p) => p.title === product.title || p.code === product.code || p.descripcion === product.descripcion);
-    
+      // Valida que tenga las 3 propiedades obligatorias
       if (product.code === undefined || product.title === undefined || product.description === undefined) {
         throw new Error("Los datos title, code y description son obligatorios !!")
       }  
+
+      // Verifica si existe el producto filtrando por titulo, codigo y descripcion
+      const existe = this.productos.find((p) => p.title === product.title && p.code === product.code && p.descripcion === product.descripcion);
 
       if (existe) {
         // Si existe no lo agrega
