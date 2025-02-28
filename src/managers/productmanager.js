@@ -48,6 +48,11 @@ class ProductManager {
       //Incrementa el ID del producto
       this.producto_id++
 
+      //No se permite indicar el ID, si existe lo elimina
+      if (product.id !== undefined){
+        delete product.id
+      }
+
       //Crea la estructura del nuevo producto utilizando la estructura que recibio como parametro, le agrega el ID
       const new_product = {
         "id": this.producto_id,

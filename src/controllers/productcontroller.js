@@ -90,8 +90,10 @@ const addProduct = (req, res) => {
 
     //Construye el json con los datos a actualizar desde el body
     const product = { ...req.body }
+
     try {
 
+  
       //Llama al metodo que agrega el producto
       const new_product = pm.addProduct(product);
 
