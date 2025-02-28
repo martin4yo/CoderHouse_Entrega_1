@@ -20,9 +20,9 @@ const updateProducts = (products) => {
             <tr>
             <th class="align-middle text-center">Id</th>
             <th class="align-middle text-center">Codigo</th>
-            <th class="align-middle text-center">Descripcion</th>
+            <th class="align-middle text-start w-100">Descripcion</th>
             <th class="align-middle text-end">Precio</th>
-            <th>Accion</th>
+            <th class="align-middle text-center">Accion</th>
             </tr>
         </thead>
         <tbody>          
@@ -33,7 +33,7 @@ const updateProducts = (products) => {
         <tr>
             <td class="align-middle text-center">${product.id}</td>
             <td class="align-middle text-center">${product.code}</td>
-            <td class="align-middle text-center">${product.title}</td>
+            <td class="align-middle text-start">${product.title}</td>
             <td class="align-middle text-end">$${product.price}</td>
             <td class="align-middle text-center w-30">
               <button class="btn btn-danger" onclick="deleteProduct(${product.id})">
