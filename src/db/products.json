@@ -44,24 +44,24 @@
     "thumbnails": ""
   },
   {
-    "id": 6,
-    "title": "Sprite 2.25l",
-    "descripcion": "Bebida Azucarada sabor Lima Limon",
-    "code": "S188",
-    "price": 490,
+    "id": 5,
+    "title": "Schweppes Tonica 1.5l",
+    "description": "Agua Tonica Marca Schweppes",
+    "code": "S993",
+    "price": 120,
+    "stock": 500,
     "status": true,
-    "stock": 50,
     "category": "Bebidas",
-    "thumbnails": ""
+    "thumbnails": "http:\\\\www.google.com"
   },
   {
-    "id": 7,
-    "title": "Pepsi Black 1.5l",
-    "descripcion": "Bebida con Edulcorante",
-    "code": "P188",
-    "price": 490,
+    "id": 6,
+    "title": "Jugo Baggio de Manzana",
+    "description": "Jugo de Frutas",
+    "code": "G332",
+    "price": 200,
+    "stock": 230,
     "status": true,
-    "stock": 50,
     "category": "Bebidas",
     "thumbnails": ""
   }

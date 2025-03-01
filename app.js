@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const handlebars = require("express-handlebars");
 const path = require("path");
-const axios = require('axios');
 
 var logger = require("morgan");
 
@@ -26,31 +25,7 @@ app.set("views", path.join(__dirname, "./src/views"));
 
 app.use("/static", express.static(path.join(__dirname, "./src/public")));
 
-// RUTAS PARA LAS VISTAS
-//Ruta para acceder a la vista de productos publicados
-app.get("/home", async (req, res) => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/products/');
-      const products = response.data
-      res.render("home", { products });
-    } 
-    catch (err) {
-      res.render("error", { error : err.message })
-    }
-  });
-
-//Ruta para acceder a la vista en tiempo real
-app.get("/realtimeproducts", async (req, res) => {
-  try {
-    res.render("realtimeproducts");
-  } 
-  catch (err) {
-    res.render("error", { error : err.message })
-  }
-});
-  
-// CONFIGURACION DE RUTAS DE LA API
-
+// CONFIGURACION DE RUTAS DE LA API y VISTAS
 const routes = require("./src/routes/index");
 app.use("/", routes);
 

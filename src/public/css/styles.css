@@ -22,24 +22,6 @@ body{
     background-color : white;
 }
 
-.container {
-    display: flex;   /* Activa Flexbox */
-}
-
-/* Primer div: ocupa todo el espacio restante */
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    width:100%;
-}
-
-/* Segundo div: ancho fijo */
-.sidebar {
-    width: 500px;     /* Ancho fijo */
-    background-color: lightblue;
-    padding: 20px;
-}
-
 .custom-btn{
     width: 40%;
     height: 60px;
@@ -49,7 +31,7 @@ body{
 }
 
 .bg-darkblue {
-    background-color: #2691dd !important; /* Azul oscuro personalizado */
+    background-color: #2958bd !important; /* Azul oscuro personalizado */
     color: white !important; /* Texto blanco para contraste */
 }
 
@@ -66,9 +48,41 @@ body{
 }
 
 .coderhouse-comision {
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .coderhouse-curso {
     font-size: 35px;
+}
+
+/* Contenedor principal */
+.grid-container {
+    display: grid;
+    grid-template-rows: auto 1fr; /* Fila superior tamaño automático, fila inferior flexible */
+    grid-template-columns: 1fr; /* Una sola columna general */
+    height: 100vh; /* Ocupar toda la pantalla */
+}
+
+/* Sección superior */
+.header {
+    color: white;
+    text-align: start;
+    padding: 20px;
+    font-size: 24px;
+}
+
+/* Contenedor de la sección inferior */
+.bottom-section {
+    display: grid;
+    grid-template-columns: 500px 1fr; /* Columna fija + columna flexible */
+}
+
+/* Columna izquierda (fija) */
+.left-panel {
+    padding: 20px;
+}
+
+/* Columna derecha (ocupa el resto) */
+.right-panel {
+    padding: 0px;
 }
