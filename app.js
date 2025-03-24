@@ -1,6 +1,8 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
 const app = express();
-const handlebars = require("express-handlebars");
+const exphbs = require("express-handlebars");
 const path = require("path");
 
 var logger = require("morgan");
@@ -19,11 +21,31 @@ app.use((req, res, next) => {
 });
 
 // CONFIGURACION DE HANDLEBARS 
-app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
+// CONFIGURACIÓN DE HANDLEBARS CON HELPER
+const hbs = exphbs.create({
+  defaultLayout: "main",
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true
+  },
+  helpers: {
+    eq: (a, b) => a === b, // Helper para comparar valores en Handlebars
+  }
+});
+app.engine("handlebars", hbs.engine);
+
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "./src/views"));
 
 app.use("/static", express.static(path.join(__dirname, "./src/public")));
+
+// CONFIGURACION DE MONGO ATLAS
+mongoose.connect("mongodb+srv://martin4yo:fEufebvdIPb9peNn@cluster0.bn8aq.mongodb.net/codershop?retryWrites=true&w=majority&appName=Cluster0")
+.then(() => {
+  console.log("Conexión a la base de datos establecida");
+})
+.catch((err) => {
+  console.log("Error al conectar a la base de datos", err);
+});
 
 // CONFIGURACION DE RUTAS DE LA API y VISTAS
 const routes = require("./src/routes/index");

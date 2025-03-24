@@ -1,21 +1,14 @@
 const ProductManager = require("../managers/productmanager");
+const pm = new ProductManager
 
-const updateClientView = (req, res) => {
-  //Dispara el evento para mostrar los productos en el cliente
-  const pm = new ProductManager
-  const products = pm.getProducts();
-  const io = req.app.get("io"); 
-  io.emit("showProducts", {info : "lista",
-                            data : products})
-}
-
-const getProducts = (req, res) => {
+const getProducts = async (req, res) => {
   try {
     //Instancia la clase ProductManager para recuperar la lista de productos completa
-    const pm = new ProductManager
-    const products = pm.getProducts();
-    if (products) {
-      res.status(200).json(products);
+
+    const result = await pm.getProducts(req);
+ 
+    if (result) {
+      res.status(200).send({success : true, message : result});
     } else {
       res.status(400).send({success : false, message : "No se encontraron productos"});
     }
@@ -25,14 +18,19 @@ const getProducts = (req, res) => {
   }
 };
 
-const getProductById = (req, res) => {
+const getProductById = async (req, res) => {
   try {
     //Instancia la clase ProductManager para recuperar un producto por ID
-    const pm = new ProductManager
     const { id } = req.params
-    const product = pm.getProductById(id);
+
+    if (!id) {
+      res.status(400).send({success : false, message : "ID de producto no proporcionado"}); 
+      return;
+    }
+
+    const product = await pm.getProductById(id);
     if (product) {
-      res.status(200).json(product);
+      res.status(200).send({success : true, message : product});
     } else {
       res.status(400).send({success : false, message : "No se encontro el producto"});
     }
@@ -42,38 +40,49 @@ const getProductById = (req, res) => {
   }
 };
 
-const deleteProduct = (req, res) => {
+const deleteProduct = async (req, res) => {
   try {
-    //Instancia la clase ProductManager para eliminar el producto
-    const pm = new ProductManager
+
     const { id } = req.params
+    
+    if (!id) {
+      res.status(400).send({success : false, message : "ID de producto no proporcionado"}); 
+      return;
+    }
 
-    const deleted_product = pm.deleteProduct(id)
+    const deleted_product = await pm.deleteProduct(id)
 
-    updateClientView(req, res)
+    if (!deleted_product) {
+      res.status(400).send({success : false, message : "No se encontro el producto"});
+      return;
+    }
 
     res.status(200).json({success : true, message : deleted_product});
 
   } catch (error) {
     res.status(500).send({success : false, message : error.message});
   }
+
 };
 
-const updateProduct = (req, res) => {
+const updateProduct = async (req, res) => {
   try {
-    //Instancia la clase ProductManager para actualizar el producto
-    const pm = new ProductManager
 
     //Construye el json con los datos a actualizar desde el body
-    const product = { ...req.body }
+    const { id } = req.params;
+    const data = req.body;
     try {
 
       //Llama al metodo de ProductManager para actualizar el producto
-      const updated_product = pm.updateProduct(product);
+      const updated_product = await pm.updateProduct(id, data);
 
-      updateClientView(req, res)
-      
-      res.status(200).json(updated_product);
+      if (!updated_product) {
+        res.status(400).send({success : false, message : "No se encontro el producto"});
+        return;
+      }
+
+      res.status(200).send({success : true, message :updated_product});
+
     }
     catch (error) {
       res.status(400).send({success : false, message : error.message});
@@ -83,31 +92,58 @@ const updateProduct = (req, res) => {
   }
 };
 
-const addProduct = (req, res) => {
+const addProduct = async (req, res) => {
   try {
-    //Instancia la clase ProductManager para crear el producto
-    const pm = new ProductManager
+    const data = req.body;
 
-    //Construye el json con los datos a actualizar desde el body
-    const product = { ...req.body }
+    // Si data es un array, iterar sobre cada producto
+    if (Array.isArray(data)) {
+      // Validar cada producto
+      for (const product of data) {
+        if (!isValidProduct(product)) {
+          res.status(400).json({ success: false, message: "Uno o más productos tienen datos incompletos" });
+          return;
+        }
+      }
 
-    try {
+      try {
+        // Insertar todos los productos
+        const newProducts = await Promise.all(data.map(pm.addProduct));
+        res.status(200).json({ success: true, message: newProducts });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
 
-  
-      //Llama al metodo que agrega el producto
-      const new_product = pm.addProduct(product);
+    } else {
+      // Validar el producto único
+      if (!isValidProduct(data)) {
+        res.status(400).json({ success: false, message: "Datos de producto incompletos" });
+        return;
+      }
 
-      updateClientView(req, res)
-
-      res.status(200).json(new_product);
-
-    }
-    catch (error) {
-      res.status(400).send({success : false, message : error.message});
+      try {
+        const newProduct = await pm.addProduct(data);
+        res.status(200).json({ success: true, message: newProduct });
+      } catch (error) {
+        res.status(400).send({ success: false, message: error.message });
+      }
     }
   } catch (error) {
-    res.status(500).send({success : false, message : "Error interno del servidor"});
+    res.status(500).send({ success: false, message: "Error interno del servidor" });
   }
 };
+
+// Función para validar los datos del producto
+const isValidProduct = (product) => {
+  return product.code !== undefined &&
+         product.title !== undefined &&
+         product.description !== undefined &&
+         product.price !== undefined &&
+         product.status !== undefined &&
+         product.stock !== undefined &&
+         product.category !== undefined &&
+         product.thumbnails !== undefined;
+};
+
 
 module.exports = { getProducts, getProductById, updateProduct, addProduct, deleteProduct };

@@ -18,9 +18,9 @@ const updateProducts = (products) => {
         </thead>
         <thead class="table-primary">
             <tr>
-            <th class="align-middle text-center">Id</th>
             <th class="align-middle text-center">Codigo</th>
-            <th class="align-middle text-start w-100">Descripcion</th>
+            <th class="align-middle text-center">Titulo</th>
+            <th class="align-middle text-start">Descripcion</th>
             <th class="align-middle text-end">Precio</th>
             <th class="align-middle text-center">Accion</th>
             </tr>
@@ -31,17 +31,21 @@ const updateProducts = (products) => {
     .map((product) => {
         return `
         <tr>
-            <td class="align-middle text-center">${product.id}</td>
             <td class="align-middle text-center">${product.code}</td>
             <td class="align-middle text-start">${product.title}</td>
+            <td class="align-middle text-start">${product.description}</td>
             <td class="align-middle text-end">$${product.price}</td>
             <td class="align-middle text-center w-30">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-danger" onclick="confirmDelete(${product.id}, '${product.title}')">
-                            <i class="bi bi-trash"></i> Eliminar
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-success" onclick="addProduct('${product._id}')" data-bs-toggle="tooltip" title="Agregar al carrito">
+                        <i class="bi bi-cart-plus"></i> <!-- Icono del carrito -->
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDelete('${product._id}', '${product.title}')" data-bs-toggle="tooltip" title="Eliminar producto">
+                        <i class="bi bi-trash"></i> <!-- Icono del tacho de basura -->
                     </button>
                 </div>
-            </tr>
+            </td>
+        </tr>
       `;
       }
   )

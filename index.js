@@ -1,5 +1,7 @@
 const app = require("./app");
 const axios = require('axios');
+const ProductManager = require("./src/managers/productmanager");
+const pm = new ProductManager
 
 const PORT = 8080;
 const displayRoutes = require("express-routemap");
@@ -26,10 +28,9 @@ io.on("connection", (socket)=>{
   
   socket.on("getProducts", async (data)=>{
 
-      const response = await axios.get('http://localhost:8080/api/products/');
-      const products = response.data
+      const result = await pm.getProducts();
       io.emit("showProducts", {info : "lista",
-                                    data : products})
+                                    data : result})
   })
 
 })

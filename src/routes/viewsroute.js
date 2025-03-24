@@ -3,15 +3,16 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
+const ProductManager = require("../managers/productmanager");
+const pm = new ProductManager
 
 router.get("/home", async (req, res) => {
     try {
-      const response = await axios.get('http://localhost:8080/api/products/');
-      const products = response.data
-      res.render("home", { products });
+      const result = await pm.getProducts(req); 
+      res.render("home", { result });
     } 
-    catch (err) {
-      res.render("error", { error : err.message })
+    catch (error) {
+      res.render("error", { error : error.message })
     }
   });
 
