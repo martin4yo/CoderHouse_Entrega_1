@@ -32,7 +32,7 @@ const getProductById = async (req, res) => {
     if (product) {
       res.status(200).send({success : true, message : product});
     } else {
-      res.status(400).send({success : false, message : "No se encontro el producto"});
+      res.status(400).send({success : false, message : `El id ${id} no corresponde a un producto existente`});
     }
   } catch (error) {
     console.error("Error al obtener el producto:", error);
@@ -53,7 +53,7 @@ const deleteProduct = async (req, res) => {
     const deleted_product = await pm.deleteProduct(id)
 
     if (!deleted_product) {
-      res.status(400).send({success : false, message : "No se encontro el producto"});
+      res.status(400).send({success : false, message : `El id ${id} no corresponde a un producto existente`});
       return;
     }
 
@@ -77,7 +77,7 @@ const updateProduct = async (req, res) => {
       const updated_product = await pm.updateProduct(id, data);
 
       if (!updated_product) {
-        res.status(400).send({success : false, message : "No se encontro el producto"});
+        res.status(400).send({success : false, message : `El id ${id} no corresponde a un producto existente`});
         return;
       }
 

@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 // CONFIGURACIÓN DE HANDLEBARS CON HELPER
 const hbs = exphbs.create({
   defaultLayout: "main",
+  partialsDir: path.join(__dirname, 'src/views/partials'), // Aquí se registran los partials
   runtimeOptions: {
     allowProtoPropertiesByDefault: true
   },
@@ -37,6 +38,7 @@ app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "./src/views"));
 
 app.use("/static", express.static(path.join(__dirname, "./src/public")));
+
 
 // CONFIGURACION DE MONGO ATLAS
 mongoose.connect("mongodb+srv://martin4yo:fEufebvdIPb9peNn@cluster0.bn8aq.mongodb.net/codershop?retryWrites=true&w=majority&appName=Cluster0")

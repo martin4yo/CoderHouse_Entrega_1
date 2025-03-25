@@ -1,64 +1,63 @@
 //* Seccion de la vista que muestra la lista de productos
 const productRows = document.querySelector(".product_list");
 
-
 //* Conexión con el servidor de Socket.IO
 const socket = io("http://localhost:8080");
 
 
 //* Muestra todos los productos en la lista
-const updateProducts = (products) => {
-  products = [...products.data];
-  let resultado = `
-  <table class="table table-bordered">
-        <thead>
+const updateProducts = (result) => {
+    const products = result.data.payload;
+    let resultado = `
+    <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="5" class="text-center bg-darkcyan">Productos RealTime</th>
+                </tr>
+            </thead>
+            <thead class="table-primary">
+                <tr>
+                <th class="align-middle text-center">Codigo</th>
+                <th class="align-middle text-center">Titulo</th>
+                <th class="align-middle text-start">Descripcion</th>
+                <th class="align-middle text-end">Precio</th>
+                <th class="align-middle text-center">Accion</th>
+                </tr>
+            </thead>
+            <tbody>          
+    `
+    resultado += products
+        .map((product) => {
+            return `
             <tr>
-                <th colspan="5" class="text-center bg-darkcyan">Productos RealTime</th>
+                <td class="align-middle text-center">${product.code}</td>
+                <td class="align-middle text-start">${product.title}</td>
+                <td class="align-middle text-start">${product.description}</td>
+                <td class="align-middle text-end">$${product.price}</td>
+                <td class="align-middle text-center w-30">
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-success" onclick="addProduct('${product._id}')" data-bs-toggle="tooltip" title="Agregar al carrito">
+                            <i class="bi bi-cart-plus"></i> <!-- Icono del carrito -->
+                        </button>
+                        <button class="btn btn-danger" onclick="confirmDelete('${product._id}', '${product.title}')" data-bs-toggle="tooltip" title="Eliminar producto">
+                            <i class="bi bi-trash"></i> <!-- Icono del tacho de basura -->
+                        </button>
+                    </div>
+                </td>
             </tr>
-        </thead>
-        <thead class="table-primary">
-            <tr>
-            <th class="align-middle text-center">Codigo</th>
-            <th class="align-middle text-center">Titulo</th>
-            <th class="align-middle text-start">Descripcion</th>
-            <th class="align-middle text-end">Precio</th>
-            <th class="align-middle text-center">Accion</th>
-            </tr>
-        </thead>
-        <tbody>          
-  `
-  resultado += products
-    .map((product) => {
-        return `
-        <tr>
-            <td class="align-middle text-center">${product.code}</td>
-            <td class="align-middle text-start">${product.title}</td>
-            <td class="align-middle text-start">${product.description}</td>
-            <td class="align-middle text-end">$${product.price}</td>
-            <td class="align-middle text-center w-30">
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-success" onclick="addProduct('${product._id}')" data-bs-toggle="tooltip" title="Agregar al carrito">
-                        <i class="bi bi-cart-plus"></i> <!-- Icono del carrito -->
-                    </button>
-                    <button class="btn btn-danger" onclick="confirmDelete('${product._id}', '${product.title}')" data-bs-toggle="tooltip" title="Eliminar producto">
-                        <i class="bi bi-trash"></i> <!-- Icono del tacho de basura -->
-                    </button>
-                </div>
-            </td>
-        </tr>
-      `;
-      }
-  )
-    .join("");
-    productRows.innerHTML = resultado +  `</tbody>
-    </table>`
-};
+        `;
+        }
+    )
+        .join("");
+        productRows.innerHTML = resultado +  `</tbody>
+        </table>`
+    };
 
 socket.emit('getProducts');
 
 //* Evento de conexión con el servidor
-socket.on("showProducts", (data) => {
-  updateProducts(data);
+socket.on("showProducts", (result) => {
+  updateProducts(result);
 });
 
 // Confirmacion de Delete de BOOTSTRAP 

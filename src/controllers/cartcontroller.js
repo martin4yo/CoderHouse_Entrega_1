@@ -45,10 +45,64 @@ const addProduct = async (req, res) => {
     //Deconstruye los 2 parametros que se requieren id de carrito y id de producto
     const {cid, pid} = req.params
     try {
-      const cart = await cm.addProductToCart(cid, pid)
+      const cart = await cm.addProductToCart(cid, pid, 1, false)
       res.status(200).send({success : false, message : cart});
     } catch (err){
-      console.log(err)
+      res.status(400).send({success : false, message : err.message});
+    }
+
+  } catch (error) {
+    res.status(500).send({success : false, message : "Error interno del servidor"});
+  }
+};
+
+const updateProduct = async (req, res) => {
+    const { cid, pid} = req.params
+    const { quantity } = req.body
+    try {
+      //Deconstruye los 2 parametros que se requieren id de carrito y id de producto
+      const {cid, pid} = req.params
+      try {
+        const cart = await cm.addProductToCart(cid, pid, quantity, true)
+        res.status(200).send({success : false, message : cart});
+      } catch (err){
+        res.status(400).send({success : false, message : err.message});
+      }
+  
+    } catch (error) {
+      res.status(500).send({success : false, message : "Error interno del servidor"});
+    }
+}
+
+const addProducts = async (req, res) => {
+  try {
+    //Deconstruye el id del carrito
+    const { id } = req.params
+
+    //Recupera el body con la lista de productos
+    const products = req.body
+
+    try {
+      const cart = await cm.addProductsToCart(id, products)
+      res.status(200).send({success : false, message : cart});
+    } catch (err){
+      res.status(400).send({success : false, message : err.message});
+    }
+
+  } catch (error) {
+    res.status(500).send({success : false, message : "Error interno del servidor"});
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    //Deconstruye los 2 parametros que se requieren id de carrito y id de producto
+    const {cid, pid} = req.params
+    try {
+      const cart = await cm.deleteProductFromCart(cid, pid)
+      res.status(200).send({success : true, message : cart});
+
+    } catch (err){
       res.status(400).send({success : false, message : err.message});
     }
 
@@ -70,16 +124,16 @@ const deleteCart = async (req, res) => {
     const deleted_cart = await cm.deleteCart(id)
 
     if (!deleted_cart) {
-      res.status(400).send({success : false, message : "No se encontro el carrito"});
-      return;
+      res.status(400).send({success : true, message : "El carrito ha sido eliminado"});
+    } else {
+      res.status(200).send({success : true, message : "Los productos del carrito han sido eliminados"});
     }
-
-    res.status(200).send({success : true, message : deleted_cart});
-
+    return;
+    
   } catch (error) {
     res.status(500).send({success : false, message : error.message});
   }
 
 };
 
-module.exports = { getCarts, getCartById, addCart, addProduct, deleteCart };
+module.exports = { getCarts, getCartById, addCart, addProduct, deleteCart, deleteProduct, addProducts, updateProduct };

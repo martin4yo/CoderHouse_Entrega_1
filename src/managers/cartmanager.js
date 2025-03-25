@@ -2,6 +2,7 @@ const Cart = require('../models/cart');
 const mongoose = require("mongoose");
 const ProductManager = require('./productmanager.js');
 const pm = new ProductManager;
+const { ValidaIds } = require('./utils.js')
 
 class CartManager {
 
@@ -29,12 +30,15 @@ class CartManager {
 
         try {
 
-          if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw new Error(`El id ${id} no es valido`);
-          }
+          ValidaIds({ cart_id : id });
     
           // Recupera el carrito
           const cart = await Cart.findById(id)
+          
+          if (!cart) {
+            throw new Error(`El carrito ${id} no existe`)
+          }
+
           return cart
     
         } catch (error) {
@@ -44,46 +48,123 @@ class CartManager {
     
   }
 
-  // Agrega un producto a un carrito existente
-  // Si la cantidad no se recibe como parametro agrega 1
-  async addProductToCart(cart_id, product_id, quantity) {
+  async deleteProductFromCart(cart_id, product_id) {
 
     try {
 
-      if (!mongoose.Types.ObjectId.isValid(cart_id)) {
-              throw new Error(`El id ${cart_id} no es valido`);
-      }
-
+      ValidaIds({ cart_id, product_id });
+      
       // Busca el carrito por el ID
-      console.log("Buscando carrito", cart_id)
-
       const cart = await this.getCartById(cart_id)
 
-      if (!cart) {
-        throw new Error(`El carrito ${cart_id} no existe`)
+      // Busca el producto por el id
+      const productId = new mongoose.Types.ObjectId(product_id);
+      let product = cart.products.find(item => item.product.equals(productId));
+
+      if (!product) {
+        throw new Error(`El producto ${product_id} no se encontró en el carrito`)
       }
+
+      //Filtro el producto del array
+      let productos_restantes = cart.products.filter((p) => !p.product.equals(product_id));
+      cart.products = productos_restantes;
+
+      //Guardo el carrito sin ese producto
+      // Modifique el carrito entonces guardo
+      const updated_cart = Cart.findByIdAndUpdate(cart_id, cart, {new : true});
+      return updated_cart;
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  
+  }
+
+
+// Agrega un producto a un carrito existente
+  // Si la cantidad no se recibe como parametro agrega 1
+  async addProductsToCart(cart_id, products) {
+
+    try {
+
+      ValidaIds({ cart_id });
+
+      // Busca el carrito por el ID
+      const cart = await this.getCartById(cart_id)
+
+      // Verifica que el array de productos tenga algo
+      if (!products || products.length === 0){
+        throw new Error('La lista de productos esta vacía');
+      }
+
+      // Limpia los articulos existentes 
+      const new_products = [];
+
+      for (const p of products) {
+        
+          ValidaIds({ product_id : p.product });
+
+          // Busca el producto por el id
+          const new_product = await pm.getProductById(p.product);
+
+          // if (!new_product) {
+          //   throw new Error(`El producto ${p.product} no existe`)
+          // }
+
+          // Agrega el producto al carrito
+          let product = {};
+          product.product = p.product;
+          product.quantity = p.quantity;
+          new_products.push(product);
+
+        }
+        
+      cart.products = new_products;
+
+      // Modifique el carrito entonces guardo
+      const updated_cart = Cart.findByIdAndUpdate(cart_id, cart, {new : true});
+      return updated_cart;
+
+    } catch (error) {
+      throw new Error(error.message);
+    }
+
+  }
+
+  // Agrega un producto a un carrito existente
+  // Si la cantidad no se recibe como parametro agrega 1
+  async addProductToCart(cart_id, product_id, quantity, replace_quantity) {
+
+    try {
+
+      ValidaIds({ cart_id, product_id });
+    
+      // Busca el carrito por el ID
+      const cart = await this.getCartById(cart_id)
 
       // Busca el producto por el id
       const new_product = pm.getProductById(product_id);
-
       if (!new_product) {
         throw new Error(`El producto ${product_id} no existe`)
       }
 
+      // Busca en los productos del carrito el producto indicado
       const productId = new mongoose.Types.ObjectId(product_id);
       let product = cart.products.find(item => item.product.equals(productId));
 
-      // Busca en los productos del carrito el producto indicado
-
       // Si no se pasa cantidad lo pone en 1
-      if (!quantity) {
+      if (!quantity && quantity !== 0) {
         quantity = 1;
       }
 
       if (product) {
-        // El producto ya esta en el carrito
-        product.quantity = product.quantity + quantity
-      }
+            // El producto ya esta en el carrito
+            if (replace_quantity){
+              product.quantity = quantity
+            } else  {
+              product.quantity = product.quantity + quantity
+            }
+          }
       else {
         // El producto no esta en el carrito
         product = {};
@@ -92,9 +173,9 @@ class CartManager {
         cart.products.push(product);
       }
 
-      if (parseInt(product.quantity) <= 0) {
+      if (parseInt(product.quantity) <= 0 || quantity === 0) {
         //Si la cantidad queda menor o igual a 0 entonces elimina el producto del carrito
-        let productos_restantes = cart.products.filter((p) => p.product !== product_id);
+        let productos_restantes = cart.products.filter((p) => !p.product.equals(product_id));
         cart.products = productos_restantes;
       }
 
@@ -103,6 +184,7 @@ class CartManager {
       return updated_cart;
 
     } catch (error) {
+      console.log("Error", error.message)
       throw new Error(error.message);
     }
 
@@ -126,30 +208,25 @@ class CartManager {
   async deleteCart(id) {
     try {
 
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error(`El id ${id} no es valido`);
-        }
-
-      // Recupera el carrito los productos
-      const delete_cart = await Cart.findById(id);
-
-      if (delete_cart) {
-        // Elimina el carrito
-        console.log("Productos", delete_cart.products);
-        if (!delete_cart.product) {
-          await Cart.findByIdAndDelete(id);
-          return delete_cart;
-        }
-        else {
-          throw new Error("El carrito no esta vacio");
-        }
-      }
-      else
-        {
-          throw new Error("El carrito no existe");
+        ValidaIds({ cart_id : id });
+      
+        // Recupera el carrito los productos
+        const delete_cart = await this.getCartById(id);
+        if (delete_cart) {
+          // Elimina el carrito
+          if (delete_cart.products.length === 0) {
+            await Cart.findByIdAndDelete(id);
+            return;
+          }
+          else {
+            delete_cart.products = []
+            const updated_cart = Cart.findByIdAndUpdate(id, delete_cart, {new : true});
+            return updated_cart;
+          }
         }
       }
     catch (error) {
+      console.log("Error", error.message)
       throw new Error(error.message)
     }
 

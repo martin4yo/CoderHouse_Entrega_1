@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const mongoose = require("mongoose");
+const { ValidaIds } = require('./utils.js')
 
 class ProductManager {
   
@@ -17,18 +18,39 @@ class ProductManager {
     }
   }
 
-  async getProducts(req) {
+  async getProducts(req = { query: {} }) {
       try {
 
-        const { page = 1, limit = 10 } = req.query; 
+        // Recupero los parametros
+        const { page = "1", limit = "10", field = "title", text = "", order = "1" } = req.query;
+        
+        const pageNumber = parseInt(page) || 1;
+        const limitNumber = parseInt(limit) || 10;
+        const sortOrder = parseInt(order) || 1;
 
-        const options = {
-          page: parseInt(page),
-          limit: parseInt(limit),
-          sort: { grade: -1 },
+        // Filtro de texto "contiene"
+        // const filter = { title: { $regex: ".*" + text + ".*", $options: 'i' } };
+        // const filter = { [field]: { $regex: ".*" + text + ".*", $options: 'i' } };
+
+        // Construir el filtro para buscar en varios campos
+        const filter = {
+            $or: [
+                { code: { $regex: ".*" + text + ".*", $options: 'i' } },
+                { title: { $regex: ".*" + text + ".*", $options: 'i' } },
+                { description: { $regex: ".*" + text + ".*", $options: 'i' } },
+                { category: { $regex: ".*" + text + ".*", $options: 'i' } }
+            ]
         };
-    
-        const result = await Product.paginate({}, options);
+        
+        // Armo el filtro y la paginacion
+        const options = {
+            page: pageNumber,
+            limit: limitNumber,
+            sort: { [field]: sortOrder }, 
+        };
+
+        // Ejecutar la consulta con paginación
+        const result = await Product.paginate(filter, options);
 
         return {
           payload: result.docs,
@@ -37,10 +59,13 @@ class ProductManager {
           nextPage: result.nextPage,
           page : result.page,
           limit : limit,
-          prevPage: result.hasPrevPage,
+          hasprevPage: result.hasPrevPage,
           hasNextPage: result.hasNextPage,
-          prevLink: result.hasPrevPage ? `page=${result.page - 1}&limit=${limit}` : "",
-          nextLink: result.hasNextPage ? `page=${result.page + 1}&limit=${limit}` : ""
+          prevLink: result.hasPrevPage ? `page=${result.page - 1}&limit=${limitNumber}&field=${field}&text=${text}&order=${order}` : "",
+          nextLink: result.hasNextPage ? `page=${result.page + 1}&limit=${limitNumber}&field=${field}&text=${text}&order=${order}` : "",
+          field : field,
+          text : text,
+          sort : sortOrder
         };
 
       } catch (error) {
@@ -53,17 +78,15 @@ class ProductManager {
     //Busca un producto por ID
     try {
 
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error(`El id ${id} no es valido`);
-      }
+      ValidaIds({ product_id : id })
 
       // Recupera todos los productos
       const product = await Product.findById(id)
       return product
 
     } catch (error) {
-      console.log("No fue posible obtener el producto", err)
-      throw new Error(error.message);
+      console.log("No fue posible obtener el producto", error)
+      throw error;
     }
 
   }
@@ -72,9 +95,7 @@ class ProductManager {
 
     try {
 
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error(`El id ${id} no es valido`);
-      }
+      ValidaIds({ product_id : id })
   
       return await Product.findByIdAndUpdate(id, data, {new : true});
 
@@ -88,9 +109,7 @@ class ProductManager {
   async deleteProduct(id) {
     try {
       
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error(`El id ${id} no es valido`);
-      }
+      ValidaIds({ product_id : id })
 
       //Elimina el producto
       const deleted_product = await Product.findByIdAndDelete(id);

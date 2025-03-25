@@ -16,6 +16,18 @@ router.get("/home", async (req, res) => {
     }
   });
 
+  router.get("/product/:id", async (req, res) => {
+    try {
+
+      const { id } = req.params
+      const product = await pm.getProductById(id); 
+      res.render("product", { product });
+    } 
+    catch (error) {
+      res.render("error", { error : error.message })
+    }
+  });
+
 //Ruta para acceder a la vista en tiempo real
 router.get("/realtimeproducts", async (req, res) => {
   try {
