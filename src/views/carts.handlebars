@@ -8,15 +8,25 @@
                     <thead class="table-primary">
                         <tr>    
                             <th>Id</th>
+                            <th>Accion</th>
                         </tr>
                     </thead>
                     <tbody>          
                         {{#each carts}}                      
-                        <tr>
-                            <td class="align-middle">
-                                <a href="/carts/?cart_id={{_id}}">{{_id}}</a>
-                            </td>                                               
-                        </tr>                         
+                            <tr>
+                                <td class="align-middle">
+                                    <a href="/carts/?cart_id={{_id}}">{{_id}}</a>
+                                </td>     
+                                <td class="align-middle">
+                                    {{#if (isEmptyArray products)}}
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <button class="btn btn-danger" onclick="deleteCart('{{cart_id}}')" data-bs-toggle="tooltip" title="Eliminar carrito">
+                                                <i class="bi bi-trash"></i> <!-- Icono del tacho de basura -->
+                                            </button>
+                                        </div>
+                                    {{/if}}
+                                </td>                                          
+                            </tr>                         
                         {{/each}}
                     </tbody>
                 </table>
@@ -29,3 +39,8 @@
            
         </div>
 </div>
+<div class="container w-100"></div>
+</div>
+
+<script src="/static/js/carts.js"></script>
+<script src="/static/js/utils.js"></script>

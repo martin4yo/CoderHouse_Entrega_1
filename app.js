@@ -30,6 +30,9 @@ const hbs = exphbs.create({
   },
   helpers: {
     eq: (a, b) => a === b, // Helper para comparar valores en Handlebars
+    isEmptyArray: function (array) {
+      return !array || array.length === 0;
+    },
   }
 });
 app.engine("handlebars", hbs.engine);
