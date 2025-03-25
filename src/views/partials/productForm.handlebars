@@ -52,6 +52,10 @@
                     {{#if product.thumbnails}}disabled{{/if}}>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Guardar Producto</button>
-                <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                {{#if product.code}}
+                    <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                {{else}}
+                    <button type="submit" class="btn btn-primary w-100">Guardar Producto</button>
+                {{/if}}
+                
             </form>         
