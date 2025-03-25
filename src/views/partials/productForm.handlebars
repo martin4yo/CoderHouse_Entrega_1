@@ -49,11 +49,11 @@
                 <div class="mb-3">
                     <label for="thumbnails" class="form-label">Imagen (URL)</label>
                     <input type="url" class="form-control" id="thumbnails" value="{{product.thumbnails}}" placeholder="Ingrese la URL de la imagen"
-                    {{#if product.thumbnails}}disabled{{/if}}>
+                    {{#if product.code}}disabled{{/if}}>
                 </div>
 
                 {{#if product.code}}
-                    <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                    <button type="button" class="btn btn-primary w-100" onclick="addProduct('{{product._id}}')">Agregar al carrito</button>
                 {{else}}
                     <button type="submit" class="btn btn-primary w-100">Guardar Producto</button>
                 {{/if}}

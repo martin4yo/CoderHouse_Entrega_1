@@ -1,0 +1,27 @@
+ <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="5" class="text-center bg-darkblue">Productos del Carrito {{cart_id}}</th>
+        </tr>
+    </thead>
+    <thead class="table-primary">
+        <tr>    
+            <th>Codigo</th>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th class="text-end">Precio</th>
+            <th class="text-end">Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>          
+        {{#each cart.products}}                      
+        <tr>
+            <td class="align-middle">{{product.code}}</td>
+            <td class="align-middle">{{product.title}}</td>
+            <td class="align-middle">{{product.description}}</td>
+            <td class="text-end align-middle">${{product.price}}</td>
+            <td class="text-end align-middle">{{quantity}}</td>                                              
+        </tr>                         
+        {{/each}}
+    </tbody>
+</table>

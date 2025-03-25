@@ -36,9 +36,6 @@ const updateProducts = (result) => {
                 <td class="align-middle text-end">$${product.price}</td>
                 <td class="align-middle text-center w-30">
                     <div class="d-flex gap-2 justify-content-center">
-                        <button class="btn btn-success" onclick="addProduct('${product._id}')" data-bs-toggle="tooltip" title="Agregar al carrito">
-                            <i class="bi bi-cart-plus"></i> <!-- Icono del carrito -->
-                        </button>
                         <button class="btn btn-danger" onclick="confirmDelete('${product._id}', '${product.title}')" data-bs-toggle="tooltip" title="Eliminar producto">
                             <i class="bi bi-trash"></i> <!-- Icono del tacho de basura -->
                         </button>
@@ -146,15 +143,4 @@ document.getElementById("productForm").addEventListener("submit", function(event
   });
 });
 
-// Función para mostrar las alertas con bootstrap
-function mostrarAlerta(mensaje, tipo) {
-  const alerta = document.createElement("div");
-  alerta.className = `alert alert-${tipo} mt-3`;
-  alerta.textContent = mensaje;
-  document.querySelector(".container").prepend(alerta); 
 
-  // Timer para ver el alerta por X milisegundos
-  setTimeout(() => {
-      alerta.remove();
-  }, 3000);
-}

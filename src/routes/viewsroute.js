@@ -5,11 +5,16 @@ const router = express.Router();
 const axios = require('axios');
 const ProductManager = require("../managers/productmanager");
 const pm = new ProductManager
+const CartManager = require("../managers/cartmanager");
+const cm = new CartManager
 
 router.get("/home", async (req, res) => {
     try {
+      
       const result = await pm.getProducts(req); 
-      res.render("home", { result });
+      const carts = await cm.getCarts();
+
+      res.render("home", { result, carts });
     } 
     catch (error) {
       res.render("error", { error : error.message })
@@ -21,7 +26,41 @@ router.get("/home", async (req, res) => {
 
       const { id } = req.params
       const product = await pm.getProductById(id); 
-      res.render("product", { product });
+
+      const carts = await cm.getCarts(); 
+
+      res.render("product", { product, carts });
+    } 
+    catch (error) {
+      res.render("error", { error : error.message })
+    }
+  });
+
+  router.get("/cart/:id", async (req, res) => {
+    try {
+
+      const { id } = req.params
+      const cart = await cm.getCartById(id); 
+      res.render("cart", { cart, cart_id : id });
+    } 
+    catch (error) {
+      res.render("error", { error : error.message })
+    }
+  });
+
+  router.get("/carts", async (req, res) => {
+    try {
+
+      const { cart_id } = req.query
+      let cart = {}
+
+      if (cart_id){
+          cart = await cm.getCartById(cart_id); 
+      }
+
+      const carts = await cm.getCarts(); 
+
+      res.render("carts", { carts, cart, cart_id });
     } 
     catch (error) {
       res.render("error", { error : error.message })

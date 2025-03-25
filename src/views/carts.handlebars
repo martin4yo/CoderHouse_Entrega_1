@@ -1,0 +1,31 @@
+<div class="bottom-section box-shd">
+
+        <div class="right-panel">
+             <div class="col-md-4 bg-darkcyan text-white p-3 w-100">
+                <h2 class="text-center">Carritos Activos</h2>
+
+                <table class="table table-bordered">
+                    <thead class="table-primary">
+                        <tr>    
+                            <th>Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>          
+                        {{#each carts}}                      
+                        <tr>
+                            <td class="align-middle">
+                                <a href="/carts/?cart_id={{_id}}">{{_id}}</a>
+                            </td>                                               
+                        </tr>                         
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="left-panel product_list">
+
+            {{> cartForm}}
+           
+        </div>
+</div>

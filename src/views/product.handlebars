@@ -1,5 +1,5 @@
 
-<div class="bottom-section box-shd">
+    <div class="bottom-section box-shd">
 
         <div class="right-panel">
              <div class="col-md-4 bg-darkcyan text-white p-3 w-100">
@@ -11,7 +11,20 @@
         </div>
 
         <div class="left-panel product_list">
+             <!-- Combo para seleccionar el carrito -->
+            <div class="d-flex align-items-center">
+                <label for="cartId" class="me-2">Seleccione el carrito:</label>
+                <select id="cartId" class="form-select w-auto">
+                    {{!-- <option value="0">Nuevo</option> --}}
+                    {{#each carts}}
+                        <option value="{{_id}}">{{_id}}</option>
+                    {{/each}}
+                </select>
+            </div>     
         </div>
+    </div>
+<div class="container w-100"></div>
 </div>
 
-<script src="/static/js/index.js"></script>
+<script src="/static/js/home.js"></script>
+<script src="/static/js/utils.js"></script>
