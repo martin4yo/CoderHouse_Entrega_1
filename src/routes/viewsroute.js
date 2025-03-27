@@ -54,8 +54,12 @@ router.get("/home", async (req, res) => {
       const { cart_id } = req.query
       let cart = {}
 
-      if (cart_id){
+      try {
+        if (cart_id){
           cart = await cm.getCartById(cart_id); 
+        }
+      } catch (error) {
+          cart = {}
       }
 
       const carts = await cm.getCarts(); 

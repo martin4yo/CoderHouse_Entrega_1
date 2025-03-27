@@ -124,7 +124,7 @@ const deleteCart = async (req, res) => {
     const deleted_cart = await cm.deleteCart(id)
 
     if (!deleted_cart) {
-      res.status(400).send({success : true, message : "El carrito ha sido eliminado"});
+      res.status(200).send({success : true, message : "El carrito ha sido eliminado"});
     } else {
       res.status(200).send({success : true, message : "Los productos del carrito han sido eliminados"});
     }

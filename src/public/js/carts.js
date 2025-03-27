@@ -32,6 +32,36 @@ function deleteProductFromCart(product_id) {
 
 }
 
+function deleteCart(cart_id) {
+
+    // URL de la API
+    const apiUrl = `http://localhost:8080/api/carts/${cart_id}`;
+
+    // Configuración del POST
+    fetch(apiUrl, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {  // Si la respuesta no fue satisfactoria
+            throw new Error("Error al eliminar el carrito");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Si el producto pudo ser agregado
+        mostrarAlerta("Carrito eliminado correctamente", "success");
+        location.reload();
+    })
+    .catch(error => {
+        // Si el producto no pudo ser agregado
+        mostrarAlerta("Error al eliminar el carrito", "danger"); 
+    });
+
+}
+
 // document.getElementById("productForm").addEventListener("submit", function(event) {
 //     event.preventDefault(); 
   
